@@ -3,6 +3,7 @@ import ssl
 import socket
 import urllib2
 import httplib
+import logging
 
 from django.core.management import BaseCommand
 from django.utils.encoding import force_unicode, DjangoUnicodeDecodeError
@@ -10,6 +11,7 @@ from django.utils.encoding import force_unicode, DjangoUnicodeDecodeError
 from tweets.models import Tweet, ShortUrl, CanonicalUrl
 
 link_regex = r"(^|[\n ])(([\w]+?://[\w\#$%&~.\-;:=,?@\[\]+]*)(/[\w\#$%&~/.\-;:=,?@\[\]+]*)?)"
+logger = logging.getLogger(__name__)
 
 class HeadRequest(urllib2.Request):
     def get_method(self):

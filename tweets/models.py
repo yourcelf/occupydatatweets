@@ -1,13 +1,13 @@
 from django.db import models
 
 class CanonicalUrl(models.Model):
-    url = models.TextField(db_index=True)
+    url = models.TextField(unique=True)
 
     def __unicode__(self):
         return unicode(self.url)
 
 class ShortUrl(models.Model):
-    short = models.URLField(db_index=True)
+    short = models.URLField(unique=True)
     url = models.ForeignKey(CanonicalUrl)
 
     def __unicode__(self):
