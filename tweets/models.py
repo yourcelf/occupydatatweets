@@ -1,7 +1,20 @@
 from django.db import models
 
+class Domain(models.Model):
+    domain = models.CharField(max_length=255, blank=True, unique=True)
+    category = models.CharField(max_length=255, blank=True)
+    subcategory = models.CharField(max_length=255, blank=True)
+
+    def __unicode__(self):
+        return u": ".join(self.domain, self.categories)
+
 class CanonicalUrl(models.Model):
     url = models.TextField(unique=True)
+
+    # denormalization
+    domain = models.ForeignKey(Domain, null=True)
+    first_appearance = models.DateTimeField(null=True)
+    tweet_count = models.IntegerField(default=0)
 
     def __unicode__(self):
         return unicode(self.url)
@@ -12,6 +25,12 @@ class ShortUrl(models.Model):
 
     def __unicode__(self):
         return unicode(self.url)
+
+class HashTag(models.Model):
+    tag = models.CharField(max_length=140, unique=True)
+
+    def __unicode__(self):
+        return unicode(self.tag)
 
 class Tweet(models.Model):
     twitter_id = models.BigIntegerField()
@@ -30,6 +49,7 @@ class Tweet(models.Model):
     source = models.CharField(max_length=255)
 
     urls = models.ManyToManyField(CanonicalUrl)
+    tags = models.ManyToManyField(HashTag)
 
     def __unicode__(self):
         return self.text
