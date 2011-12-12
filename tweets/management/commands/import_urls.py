@@ -37,7 +37,12 @@ def get_long_url(short_url):
             url, status = opener.open(request, timeout=1)
             url = force_unicode(url)
             #print "..........  ", url
-        except (ValueError, urllib2.HTTPError, socket.timeout, ssl.SSLError, urllib2.URLError, DjangoUnicodeDecodeError, httplib.BadStatusLine):
+        except (ValueError, urllib2.HTTPError, socket.timeout, ssl.SSLError, urllib2.URLError, httplib.BadStatusLine, httplib.InvalidURL):
+            break
+        except Exception as e:
+            logger.error(short_url)
+            logger.error(url)
+            logger.exception(e)
             break
     return url
 
@@ -56,6 +61,8 @@ class Command(BaseCommand):
         chunk = 100
 
         for x in range(low, high, chunk):
+            if x % 1000 == 0:
+                print x - low, "/", (high - low)
             for tweet in Tweet.objects.all()[x:x + chunk]:
                 results = re.finditer(link_regex, tweet.text, re.I | re.DOTALL)
                 for match in results:
@@ -68,6 +75,6 @@ class Command(BaseCommand):
                             short=short_url,
                             url=url,
                         )
-                    print tweet.pk, ":", short_url, "=>", url
+                    #print tweet.pk, ":", short_url, "=>", url
                     #print tweet.pk
                     tweet.urls.add(url)
