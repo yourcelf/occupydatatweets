@@ -50,6 +50,9 @@
                 width: 2.5em;
                 text-align: center;
             }
+            .muted {
+                opacity: 0.3;
+            }
             .swatch {
                 display: inline-block;
                 width: 1em;
@@ -61,6 +64,12 @@
             .category {
                 display: inline-block;
                 padding: 0.1em
+            }
+            .category a:link, .category a:visited {
+                color: #fff;
+                font-weight: normal;
+                text-decoration: none;
+                border-bottom: 1px dotted #aaa;
             }
             .fail       { background-color: #f00; text-decoration: line-through; }
             .donation, .donation a:link, .donation a:visited  { background-color: #99ff99; color: black; }
@@ -135,7 +144,7 @@
         var url_display;
         categories[result.category] = 1;
         if (domain_parts.length > 1) {
-            url_display = domain_parts[1].substring(0, 15) + "...";
+            url_display = domain_parts[1].replace(/^www\./, "").substring(0, 15) + "...";
         } else {
             url_display = domain_parts[0].substring(0, 15) + "...";
         }
@@ -161,9 +170,25 @@
 
     // Categories
     for (var category in categories) {
-        $("#categories").append(
-            "<div class='category'><span class='swatch " + category+ "'></span>" + category + "</div>"
-        );
+        (function(category) {
+            var link = $("<a href='#'/>").html(category).click(function() {
+                $(".muted").removeClass("muted");
+                if ($(this).parent(".category").hasClass("showing")) {
+                    $(this).parent(".category").removeClass("showing");
+                } else {
+                    $(".showing").removeClass("showing");
+                    $(this).parent(".category").addClass("showing");
+                    $(".category:not(.showing").addClass("muted");
+                    $(".tweet-link:not(." + category + ")").addClass("muted");
+
+                }
+                return false;
+            });
+            var div = $("<div class='category'/>");
+            div.append("<span class='swatch " + category + "'></span>");
+            div.append(link);
+            $("#categories").append(div);
+        })(category);
     }
 
     // Pagination
