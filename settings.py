@@ -165,5 +165,10 @@ LOGGING = {
             'level': 'ERROR',
             'propagate': True,
         },
+        'tweets.management.commands.justurls': {
+            'handlers': ['log_file'],
+            'level': 'ERROR',
+            'propagate': True,
+        },
     },
 }

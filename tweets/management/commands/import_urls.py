@@ -26,7 +26,6 @@ class RawRedirectHandler(urllib2.HTTPRedirectHandler):
     def http_error_302(self, *a, **k): return self.get_redirect(*a, **k)
     def http_error_307(self, *a, **k): return self.get_redirect(*a, **k)
 
-
 def get_long_url(short_url):
     url = short_url
     opener = urllib2.build_opener(RawRedirectHandler())
