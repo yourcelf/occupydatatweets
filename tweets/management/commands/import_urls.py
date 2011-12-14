@@ -10,6 +10,8 @@ from tweets.utils import get_long_url
 
 logger = logging.getLogger(__name__)
 
+link_regex = r"(^|[\n ])(([\w]+?://[\w\#$%&~.\-;:=,?@\[\]+]*)(/[\w\#$%&~/.\-;:=,?@\[\]+]*)?)"
+
 class Command(BaseCommand):
     args = 'requires two integers: the range of tweets to scan.'
     help = "Parse the URLs from all tweets"
