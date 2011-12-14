@@ -61,11 +61,11 @@ class Command(BaseCommand):
 
         for x in range(low, high, chunk):
             if x % 1000 == 0:
-                print x - low, "/", (high - low)
+                print x, "/", (high), (float(x) / high)
             for tweet in Tweet.objects.all()[x:x + chunk]:
                 results = re.finditer(link_regex, tweet.text, re.I | re.DOTALL)
                 for match in results:
-                    short_url = match.group(2)
+                    short_url = match.group(2).split("&")[0]
                     try:
                         url = ShortUrl.objects.get(short=short_url).url
                     except ShortUrl.DoesNotExist:
