@@ -8,8 +8,6 @@ import cStringIO
 
 from django.utils.encoding import force_unicode
 
-link_regex = r"(^|[\n ])(([\w]+?://[\w\#$%&~.\-;:=,?@\[\]+]*)(/[\w\#$%&~/.\-;:=,?@\[\]+]*)?)"
-
 class HeadRequest(urllib2.Request):
     def get_method(self):
         return "HEAD"
