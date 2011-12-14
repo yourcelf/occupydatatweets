@@ -6,7 +6,7 @@ import httplib
 import codecs
 import cStringIO
 
-from django.utils.encoding import force_unicode
+from django.utils.encoding import force_unicode, DjangoUnicodeDecodeError
 
 class HeadRequest(urllib2.Request):
     def get_method(self):
@@ -29,10 +29,17 @@ def get_long_url(short_url):
     while status != 200:
         request = HeadRequest(url)
         try:
-            url, status = opener.open(request, timeout=1)
-            url = force_unicode(url)
-            #print "..........  ", url
+            enc_url, status = opener.open(request, timeout=1)
         except (KeyError, ValueError, urllib2.HTTPError, socket.timeout, ssl.SSLError, urllib2.URLError, httplib.BadStatusLine):
+            break
+        try:
+            url = force_unicode(enc_url)
+        except DjangoUnicodeDecodeError:
+            for encoding in ('iso-8859-1', 'iso-8859-15', 'windows-1252'):
+                try:
+                    url = force_unicode(enc_url.decode(encoding))
+                except (DjangoUnicodeDecodeError, UnicodeDecodeError):
+                    continue
             break
     return url
 
