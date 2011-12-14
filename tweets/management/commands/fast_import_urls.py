@@ -4,9 +4,9 @@ import tempfile
 import subprocess
 
 from django.core.management import BaseCommand
-from django.conf.settings import BASE
+from django.conf import settings
 
-MANAGE = os.path.join(BASE, "manage.py")
+MANAGE = os.path.join(settings.BASE, "manage.py")
 
 class Command(BaseCommand):
     args = "<num_simultaneous_workers> <input_dir> <output_dir>"
@@ -14,8 +14,8 @@ class Command(BaseCommand):
 
     def handle(self, num_simultaneous_workers, *args, **kwargs):
         num_simultaneous_workers = int(num_simultaneous_workers)
-        in_tmp_dir = args[0] if args else tempfile.mkdtemp(prefix="shorturls_")
-        out_tmp_dir = args[1] if args else tempfile.mkdtemp(prefix="longurls_")
+        in_tmp_dir = args[0] if args else tempfile.mkdtemp(prefix=os.path.join(settings.BASE, "data", "shorturls_"))
+        out_tmp_dir = args[1] if args else tempfile.mkdtemp(prefix=os.path.join(settings.BASE, "data", "longurls_"))
         if args:
             print "Using given directory '%s'" % in_tmp_dir
         else:
@@ -31,7 +31,7 @@ class Command(BaseCommand):
             if os.path.exists(outfile):
                 with open(infile) as fh1:
                     with open(outfile) as fh2:
-                        if len(infile.read().split("\n")) == 
+                        if len(infile.read().split("\n")) == \
                                 len(outfile.read().split("\n")):
                             print "Looks like '%s' is already complete." % outfile
                             continue

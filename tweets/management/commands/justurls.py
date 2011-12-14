@@ -16,7 +16,7 @@ class HeadRequest(urllib2.Request):
 
 class RawRedirectHandler(urllib2.HTTPRedirectHandler):
     def get_redirect(self, req, fp, code, msg, headers):
-        loc = headers['Location']
+        loc = headers.get('Location', "")
         status = code
         return loc, status
     def http_error_301(self, *a, **k): return self.get_redirect(*a, **k)
@@ -25,6 +25,7 @@ class RawRedirectHandler(urllib2.HTTPRedirectHandler):
 
 def get_long_url(short_url):
     url = short_url
+    url = url.split("&")[0]
     opener = urllib2.build_opener(RawRedirectHandler())
     status = 0
     while status != 200:
