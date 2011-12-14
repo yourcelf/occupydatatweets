@@ -1,16 +1,13 @@
 import re
-import ssl
-import socket
-import urllib2
-import httplib
 import logging
 
 from django.core.management import BaseCommand
 from django.utils.encoding import force_unicode, DjangoUnicodeDecodeError
+from django.db.utils import DatabaseError
 
 from tweets.models import Tweet, ShortUrl, CanonicalUrl
+from tweets.utils import get_long_url
 
-link_regex = r"(^|[\n ])(([\w]+?://[\w\#$%&~.\-;:=,?@\[\]+]*)(/[\w\#$%&~/.\-;:=,?@\[\]+]*)?)"
 logger = logging.getLogger(__name__)
 
 class HeadRequest(urllib2.Request):
@@ -69,11 +66,15 @@ class Command(BaseCommand):
                     try:
                         url = ShortUrl.objects.get(short=short_url).url
                     except ShortUrl.DoesNotExist:
-                        url, created = CanonicalUrl.objects.get_or_create(url=get_long_url(short_url))
-                        ShortUrl.objects.create(
-                            short=short_url,
-                            url=url,
-                        )
+                        try:
+                            url, created = CanonicalUrl.objects.get_or_create(url=get_long_url(short_url))
+                            ShortUrl.objects.create(
+                                short=short_url,
+                                url=url,
+                            )
+                        except DatabaseError as e:
+                            logger.error(short_url)
+                            logger.exception(e)
                     #print tweet.pk, ":", short_url, "=>", url
                     #print tweet.pk
                     tweet.urls.add(url)

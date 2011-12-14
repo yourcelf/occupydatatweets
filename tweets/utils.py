@@ -1,6 +1,42 @@
 import csv
+import ssl
+import socket
+import urllib2
+import httplib
 import codecs
 import cStringIO
+
+from django.utils.encoding import force_unicode
+
+link_regex = r"(^|[\n ])(([\w]+?://[\w\#$%&~.\-;:=,?@\[\]+]*)(/[\w\#$%&~/.\-;:=,?@\[\]+]*)?)"
+
+class HeadRequest(urllib2.Request):
+    def get_method(self):
+        return "HEAD"
+
+class RawRedirectHandler(urllib2.HTTPRedirectHandler):
+    def get_redirect(self, req, fp, code, msg, headers):
+        loc = headers['Location']
+        status = code
+        return loc, status
+    def http_error_301(self, *a, **k): return self.get_redirect(*a, **k)
+    def http_error_302(self, *a, **k): return self.get_redirect(*a, **k)
+    def http_error_307(self, *a, **k): return self.get_redirect(*a, **k)
+
+
+def get_long_url(short_url):
+    url = short_url
+    opener = urllib2.build_opener(RawRedirectHandler())
+    status = 0
+    while status != 200:
+        request = HeadRequest(url)
+        try:
+            url, status = opener.open(request, timeout=1)
+            url = force_unicode(url)
+            #print "..........  ", url
+        except (KeyError, ValueError, urllib2.HTTPError, socket.timeout, ssl.SSLError, urllib2.URLError, httplib.BadStatusLine):
+            break
+    return url
 
 class UTF8Recoder:
     """
