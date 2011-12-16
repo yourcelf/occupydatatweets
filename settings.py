@@ -125,6 +125,22 @@ INSTALLED_APPS = (
     'tweets',
 )
 
+# Celery settings
+import djcelery
+INSTALLED_APPS += ("djcelery",)
+os.environ["CELERY_LOADER"] = "django"
+BROKER_HOST = "localhost"
+BROKER_PORT = 5672
+BROKER_USER = "guest"
+BROKER_PASSWORD = "guest"
+BROKER_VHOST = "/"
+
+CELERYD_POOL = "eventlet"
+CELERYD_CONCURRENCY = 128
+CELERY_DISABLE_RATE_LIMITS = True
+
+djcelery.setup_loader()
+
 # A sample logging configuration. The only tangible logging
 # performed by this configuration is to send an email to
 # the site admins on every HTTP 500 error.
@@ -166,6 +182,16 @@ LOGGING = {
             'propagate': True,
         },
         'tweets.management.commands.justurls': {
+            'handlers': ['log_file'],
+            'level': 'ERROR',
+            'propagate': True,
+        },
+        'tweets.utils': {
+            'handlers': ['log_file'],
+            'level': 'ERROR',
+            'propagate': True,
+        },
+        'tweets.tasks': {
             'handlers': ['log_file'],
             'level': 'ERROR',
             'propagate': True,

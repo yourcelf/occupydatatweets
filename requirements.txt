@@ -2,3 +2,6 @@ psycopg2
 django
 requests
 south
+Celery
+django-celery
+eventlet

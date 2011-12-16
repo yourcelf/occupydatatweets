@@ -5,8 +5,11 @@ import urllib2
 import httplib
 import codecs
 import cStringIO
+import logging
 
 from django.utils.encoding import force_unicode, DjangoUnicodeDecodeError
+
+logger = logging.getLogger(__name__)
 
 class HeadRequest(urllib2.Request):
     def get_method(self):
@@ -30,7 +33,11 @@ def get_long_url(short_url):
         request = HeadRequest(url)
         try:
             enc_url, status = opener.open(request, timeout=1)
-        except (KeyError, ValueError, urllib2.HTTPError, socket.timeout, ssl.SSLError, urllib2.URLError, httplib.BadStatusLine):
+        except (KeyError, ValueError, urllib2.HTTPError, socket.timeout, ssl.SSLError, urllib2.URLError, httplib.BadStatusLine, httplib.InvalidURL):
+            break
+        except Exception as e:
+            logger.error(url)
+            logger.exception(e)
             break
         try:
             url = force_unicode(enc_url)

@@ -22,7 +22,7 @@ class Command(BaseCommand):
         chunk = 1000
 
         for i in range(low, high, 1000):
-            print i
+            print (i - low) / float(high - low)
             for tweet in Tweet.objects.all()[i:i + chunk]:
                 results = re.finditer(r"(#\w+)", tweet.text)
                 for match in results:

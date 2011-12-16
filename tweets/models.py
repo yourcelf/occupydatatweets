@@ -20,14 +20,14 @@ class CanonicalUrl(models.Model):
         return unicode(self.url)
 
 class ShortUrl(models.Model):
-    short = models.URLField(unique=True)
+    short = models.URLField(unique=True, db_index=True)
     url = models.ForeignKey(CanonicalUrl)
 
     def __unicode__(self):
         return unicode(self.url)
 
 class HashTag(models.Model):
-    tag = models.CharField(max_length=140, unique=True)
+    tag = models.CharField(max_length=140, unique=True, db_index=True)
 
     def __unicode__(self):
         return unicode(self.tag)

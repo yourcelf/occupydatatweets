@@ -18,10 +18,14 @@ class Command(BaseCommand):
             SET tweet_count = (SELECT COUNT(t.id) FROM 
                 tweets_tweet_urls t WHERE t.canonicalurl_id = c.id)
         """)
+        transaction.commit_unless_managed()
         for can in CanonicalUrl.objects.all():
             domain_str = urlparse.urlparse(can.url).netloc.strip().lower()
             domain_str = re.sub('^www\.', '', domain_str)
-            can.first_appearance = can.tweet_set.order_by('created_at')[0].created_at
+            try:
+                can.first_appearance = can.tweet_set.order_by('created_at')[0].created_at
+            except IndexError:
+                can.first_appearance = None
             if domain_str in cache:
                 domain = cache[domain_str]
             else:
@@ -29,5 +33,4 @@ class Command(BaseCommand):
                 cache[domain_str] = domain
             can.domain = domain
             can.save()
-        transaction.commit_unless_managed()
 

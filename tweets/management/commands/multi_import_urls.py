@@ -23,7 +23,7 @@ class Command(BaseCommand):
 
             while True:
                 try:
-                    procs.pop().wait()
+                    procs.pop().communicate()
                 except IndexError:
                     break
         except KeyboardInterrupt:
