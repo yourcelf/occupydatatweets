@@ -1,0 +1,98 @@
+@import "compass/reset"
+@import "compass/utilities/general/clearfix"
+@import "compass/css3/border-radius"
+@import "compass/css3/inline-block"
+@import "compass/css3/box-shadow"
+@import "compass/css3/text-shadow"
+@import "compass/typography/vertical_rhythm"
+@import "blueprint/buttons"
+@import "blueprint/interaction"
+@import "blueprint/form"
+
++establish-baseline
++blueprint-form
+
+//
+// Boilerplate
+// 
+body
+  font-family: $pfontfamily
+  font-size: 12pt
+  line-height: 1.5em
+  text-align: left
+  background-color: $body
+  color: $color
+
+h1, h2, h3, h4, h5, h6
+  font-family: $hfontfamily
+  +adjust-font-size-to(30px, 3)
+  margin-top: 0.5em
+  margin-bottom: 0.5em
+  font-weight: 400
+  line-height: 1em
+h2
+  +adjust-font-size-to(24px, 2)
+  font-weight: bold
+h3
+  +adjust-font-size-to(18px, 1)
+  font-weight: bold
+  font-style: italic
+h4
+  +adjust-font-size-to(16px, 1)
+  font-weight: bold
+h5
+  +adjust-font-size-to(14px, 1)
+  font-weight: bold
+h6
+  +adjust-font-size-to(12px, 1)
+  font-weight: bold
+tt,pre
+  font-family: monospace
+p
+  margin-bottom: 1em
+small
+  font-size: 0.8em
+em
+  font-weight: bold
+strong
+  font-weight: bold
+  font-size: larger
+b
+  font-weight: bold
+i
+  font-style: italic
+li
+  list-style-type: disc
+  margin-left: 1em
+ul.blanklist li
+  list-style-type: none
+  margin-left: 0.5em
+table
+  border-collapse: collapse
+
+dt
+  font-weight: bold
+dd
+  margin-left: 1em
+
+.error
+  +error
+.success
+  +success
+.highlight
+  +highlight
+.info
+  +notice
+
+a:link
+  color: $link
+a:visited
+  color: $visited
+
+@mixin link-like
+  color: $link
+  cursor: pointer
+  text-decoration: underline
+
+.link-like
+  +link-like

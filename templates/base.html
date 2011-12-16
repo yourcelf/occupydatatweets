@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>{% block title %}{% endblock %} - Occupy Twitter</title>
+        <link rel="stylesheet" type="text/css" href="/static/style.css" />
+    </head>
+    <body>
+        {% block body %}
+        {% endblock %}
+
+<script type='text/template' id='paginationTemplate'>
+    <div>
+        Page <span class='current-page'></span> of <span class='total-pages'></span>.  
+        <a href='' class='previous-page'></a>
+        <a href='' class='next-page'></a>
+    </div>
+    <div>
+        Sort: <span class='order-links'></span>
+    </div>
+</script>
+{% block scripts %}
+<script type='text/javascript' src='http://ajax.googleapis.com/ajax/libs/jquery/1/jquery.min.js'></script>
+<script type='text/javascript' src='/static/script.js'></script>
+{% endblock %}
+</body>
+</html>

@@ -50,7 +50,7 @@ def _get_data(request, page, sort, per_page):
 
 def tweet_page(request, page=1, sort='count'):
     return render(request, "tweets/tweets.html", {
-        'data': json.dumps(_get_data(request, page, sort, 1002))
+        'data': json.dumps(_get_data(request, page, sort, 1000))
     })
 
 def home(request):

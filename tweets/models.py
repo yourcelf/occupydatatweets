@@ -6,7 +6,10 @@ class Domain(models.Model):
     subcategory = models.CharField(max_length=255, blank=True)
 
     def __unicode__(self):
-        return u": ".join(self.domain, self.categories)
+        categories = [self.category]
+        if self.subcategory:
+            categories.append(self.subcategory)
+        return u": ".join((self.domain, ",".join(categories)))
 
 class CanonicalUrl(models.Model):
     url = models.TextField(unique=True)

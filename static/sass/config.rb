@@ -1,0 +1,10 @@
+http_path = "/"
+project_path = "."
+css_dir = ".."
+sass_dir = "."
+images_dir = "."
+javascripts_dir = "."
+line_comments = false
+line_numbers = false
+load_paths = false
+preferred_syntax = :sass

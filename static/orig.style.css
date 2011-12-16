@@ -1,0 +1,82 @@
+            body {
+                background-color: black;
+                font-family: 'Courier';
+                font-size: 14px;
+                color: white;
+            }
+            a:link, a:visited {
+                color: #33aaff;
+                font-weight: bold
+            }
+            p {
+                max-width: 33em;
+            }
+            .head, #categories, .pagination {
+                background-color: rgba(255, 255, 255, 0.2);
+                text-transform: uppercase;
+            }
+            .head, #categories, .pagination, #tweets {
+                max-width: 960px;
+            }
+            .pagination {
+                font-size: 14px;
+            }
+            #categories {
+                margin-bottom: 1em;
+            }
+
+            .tweet-link {
+                font-family: monospace;
+                display: inline-block;
+                font-size: 12px;
+                width: 180px;
+                height: 1.5em;
+                margin: 1px;
+                border-radius: 3px;
+            }
+            .tweet-link a:link, .tweet-link a:visited {
+                color: white;
+            }
+            .tweet-link .count {
+                display: inline-block;
+                background-color: rgba(255, 255, 255, 0.2);
+                margin-left: 0.1em;
+                margin-right: 0.1em;
+                width: 3.5em;
+                text-align: center;
+            }
+            .muted {
+                opacity: 0.3;
+            }
+            .swatch {
+                display: inline-block;
+                width: 1em;
+                height: 1em;
+                border-radius: 5px;
+                margin-right: 0.2em;
+                margin-left: 0.5em;
+            }
+            .category {
+                display: inline-block;
+                padding: 0.1em
+            }
+            .category a:link, .category a:visited {
+                color: #fff;
+                font-weight: normal;
+                text-decoration: none;
+                border-bottom: 1px dotted #aaa;
+            }
+            .fail, .fail a:link, .fail a:visited { background-color: #a99; text-decoration: line-through; color: #bbb;}
+            .donation, .donation a:link, .donation a:visited  { background-color: #99ff99; color: black; }
+            .google, .google a:link, .google a:visited     { background-color: #ffff99; color: black; }
+            .picture,.image    { background-color: #FF398E; }
+            .other      { background-color: #999999; }
+            .stream     { background-color: #9999ff; }
+            .tweet      { background-color: #99aaff; }
+            .occupy, .occupy a:link, .occupy a:visited { background-color: #ffffff; color: #000000;}
+            .news, .news a:link, .news a:visited       { background-color: #7c6c47; }
+            .blog       { background-color: #008800; }
+            .wikipedia, .wikipedia a:link, .wikipedia a:visited  { background-color: #FFD348; color: #000000;}
+            .geo        { background-color: #003300; }
+            .fb         { background-color: #1133aa; }
+            .video      { background-color: #ff0000; }
