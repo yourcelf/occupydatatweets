@@ -1,5 +1,5 @@
 import json
-from django.shortcuts import render, redirect
+from django.shortcuts import render, redirect, get_object_or_404
 from django.core.urlresolvers import reverse
 from django.http import HttpResponse, Http404
 from django.core.paginator import Paginator, InvalidPage, EmptyPage
@@ -55,3 +55,20 @@ def tweet_page(request, page=1, sort='count'):
 
 def home(request):
     return redirect("tweets.page", page=1, sort='date')
+
+def pixel_image(request, sort='count'):
+    if sort == 'count':
+        initial_img_name = 'pixel-count-2.png'
+    elif sort == 'date':
+        initial_img_name = 'pixel-date-2.png'
+    return render(request, "tweets/pixelimage.html", {
+        'initial_img_name': initial_img_name,
+        'sort_name': sort,
+    })
+
+def url_detail(request, url_id):
+    url = get_object_or_404(CanonicalUrl, pk=url_id)
+    return render(request, "tweets/url_detail.html", {
+        'url': url,
+        'tweets': url.tweet_set.order_by('-created_at'),
+    })

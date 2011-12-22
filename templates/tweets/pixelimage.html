@@ -1,0 +1,195 @@
+{% extends "base.html" %}
+{% block title %}Tiny URLs{% endblock %}
+{% block body %}
+<div class='head' id='img-top'>
+    <h1>OCCUPY <span style='color: red'>TWITTER</span></h1>
+    <h1>ALL THE URLS!!</h1>
+    <p>This visualization shows <span class='url-count'>...</span> categorized, unique URLs included in tweets with occupy hashtags, between <span class='start-date'>...</span> and <span class='end-date'>...</span>.  With repeats, that's a total of <span class='tweet-count'>...</span> tweets!!</p>
+<p>
+    Sort URLs by: 
+    {% if sort_name == "count" %}
+        <b>*Tweet count</b>, <a href='{% url tweets.pixel_image "date" %}'>Date</a>
+    {% else %}
+        <a href='{% url tweets.pixel_image "count" %}'>Tweet count</a>, <b>*Date</b>
+    {% endif %}
+
+    <span class='initial-loading'>
+        <img src='{{ STATIC_URL }}img/spinner.gif'>
+        Loading tweet data
+    </span>
+</p>
+</div>
+
+<div id='categories'></div>
+
+<div class='scale'>
+    <div class='small' data-scale='1'></div>
+    <div class='medium chosen' data-scale='2'></div>
+    <div class='large' data-scale='6'></div>
+    <div class='loading' style='display: none;'><img src='{{ STATIC_URL }}/img/spinner.gif' />Loading...</div>
+</div>
+
+<div id='imageHolder'>
+    <img id='pixelimage' src='{{ STATIC_URL }}img/{{ initial_img_name }}' alt="One url per pixel" style='margin-left: auto; margin-right: auto; position: relative;'/>
+    <div id='tooltip'></div>
+</div>
+{% endblock %}
+{% block scripts %}
+{{ block.super }}
+<script type="text/template" id='tooltipTemplate'>
+    <!--<div class='arrow'></div>-->
+    <div class='link-info'>
+        <div class='category'>
+            <div class='swatch <%= category %>'></div> <%= category %>
+        </div>
+        <div class='url'><%= url.length >= 35 ? url + "..." : url %></div>
+        <p>First appeared: <%= first_appearance %></p>
+        <p>Tweeted <%= count %> times.</p>
+    </div>
+</script>
+
+<script type='text/javascript'>
+    var data = [];
+    var lastPoint = null;
+    var tooltipTemplate = _.template($("#tooltipTemplate").html());
+    var tooltip = $("#tooltip");
+    var scale = 2;
+    var sort_name = "{{ sort_name }}";
+    var category = null;
+
+    var urls = {
+        img: function() {
+            var parts = [sort_name, scale];
+            if (category) {
+                parts.push(category);
+            }
+            return "{{ STATIC_URL }}img/pixel-" + parts.join("-") + ".png";
+        },
+        data: function() {
+            return "{{ STATIC_URL }}data/pixel-" + sort_name + ".json";
+        },
+        categories: function() {
+            return "{{ STATIC_URL }}data/pixel-categories.json";
+        }
+    };
+
+    $.get(urls.categories(), function(json) {
+        for (var c = 0; c < json.categories.length; c++) {
+            (function(cat) {
+                var link = $("<a href='#'></a>").html(
+                    cat[0] + " (" + cat[1] + ")"
+                ).attr(
+                    "data-category", cat[0]
+                ).click(function() {
+                    $(".muted").removeClass("muted");
+                    $("#mute-img").remove();
+                    if ($(this).parent(".category").hasClass("showing")) {
+                        $(this).parent(".category").removeClass("showing");
+                        category = null;
+                        window.location.hash = "#all/" + scale;
+                    } else {
+                        category = $(this).attr("data-category");
+                        window.location.hash = "#" + category + "/" + scale;
+                        // Mute category links
+                        $(".showing").removeClass("showing");
+                        $(this).parent(".category").addClass("showing");
+                        $(".category:not(.showing").addClass("muted");
+                    }
+                    $(".loading", ".scale").show()
+                    $("#pixelimage").load(function() {
+                        $(".loading", ".scale").hide();
+                    });
+                    $("#pixelimage").attr("src", urls.img());
+                    return false;
+                });
+                var div = $("<div class='category'/>");
+                div.append("<span class='swatch " + cat[0] + "'></span>");
+                div.append(link);
+                $("#categories").append(div);
+            })(json.categories[c]);
+        }
+        $(".start-date", "#img-top").html(json.start_date.split("T")[0]);
+        $(".end-date", "#img-top").html(json.end_date.split("T")[0]);
+        $(".url-count", "#img-top").html(json.url_count);
+        $(".tweet-count", "#img-top").html(json.tweet_count);
+        if (window.location.hash) {
+            var parts = window.location.hash.substring(1).split("/");
+            $("[data-category=" + parts[0] + "]").click();
+            $("[data-scale=" + parts[1] + "]").click();
+        } else {
+            window.location.hash = "#all/" + scale;
+        }
+    });
+
+    $.get(urls.data(), function(json) { 
+        data = json;
+        $(".initial-loading").hide();
+        $("#pixelimage").css("cursor", "pointer");
+        $("#pixelimage").click(function() {
+            if (lastPoint != null) {
+                window.location.href = "/url/" + data[lastPoint][4];
+            }
+        });
+    });
+
+    $(".scale div").click(function() {
+        $(".chosen", ".scale").removeClass("chosen")
+        $(this).addClass("chosen");
+        scale = parseInt($(this).attr("data-scale"));
+        $(".loading", ".scale").show()
+        $("#pixelimage").load(function() {
+            $(".loading", ".scale").hide();
+        });
+        $("#pixelimage").attr("src", urls.img());
+        window.location.hash = "#" + (category || "all") + "/" + scale;
+    });
+
+    // Tooltip
+    var handleTooltip = function(e) {
+        tooltip.show();
+        var offset = $("#pixelimage").offset();
+        var cols = Math.floor($("#pixelimage").width() / scale)
+        var px = e.pageX - offset.left;
+        var py = e.pageY - offset.top;
+        var x = parseInt(px / scale);
+        var y = parseInt(py / scale);
+        lastPoint = y * cols + x;
+        var point = data[lastPoint];
+        if (point != undefined) {
+            if (category != null && point[1] != category) {
+                tooltip.hide();
+                $("#pixelimage").css("cursor", "default");
+            } else {
+                $("#pixelimage").css("cursor", "pointer");
+                tooltip.html(tooltipTemplate({
+                    url: point[0],
+                    category: point[1],
+                    count: point[2],
+                    first_appearance: point[3].split("T")[0]
+                }));
+            }
+        } else {
+            tooltip.html("<img src='{{ STATIC_URL }}img/spinner.gif' /> Loading...")  
+            lastPoint = null;
+        }
+        if (px > $("#pixelimage").width() - $("#tooltip").width()) {
+            tooltip.css("left", (px - $("#tooltip").width() - 15) + "px");
+        } else {
+            tooltip.css("left", (px + 15) + "px");
+        }
+        if (py < $("#pixelimage").height() - $("#tooltip").height()) {
+            tooltip.css("top", (py + 15) + "px");
+        } else {
+            tooltip.css("top", (py - $("#tooltip").height() - 15) + "px");
+        }
+    };
+    $("#pixelimage").mousemove(handleTooltip);
+    $("#pixelimage").mouseover(handleTooltip);
+    $("#pixelimage").mouseout(function() {
+        tooltip.hide();        
+        lastPoint = null;
+    });
+</script>
+
+{% endblock %}
+

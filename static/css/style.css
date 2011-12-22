@@ -53,7 +53,8 @@ a img {
   border: none;
 }
 
-article, aside, details, figcaption, figure, footer, header, hgroup, menu, nav, section, summary {
+article, aside, details, figcaption, figure,
+footer, header, hgroup, menu, nav, section {
   display: block;
 }
 
@@ -128,7 +129,7 @@ textarea {
 }
 
 body {
-  font-family: "Courier", monospace;
+  font-family: Geneva, "Lucida Sans", "Lucida Grande", "Lucida Sans Unicode", Verdana, sans-serif;
   font-size: 12pt;
   line-height: 1.5em;
   text-align: left;
@@ -137,7 +138,7 @@ body {
 }
 
 h1, h2, h3, h4, h5, h6 {
-  font-family: "Courier", monospace;
+  font-family: Geneva, Verdana, "Lucida Sans", "Lucida Grande", "Lucida Sans Unicode", sans-serif;
   font-size: 1.875em;
   line-height: 2.4em;
   margin-top: 0.5em;
@@ -295,24 +296,20 @@ a:link, a:visited {
   font-weight: bold;
 }
 
-.head, #categories, .pagination {
+.head, #categories, #img-categories, .pagination {
   background-color: rgba(255, 255, 255, 0.2);
-  text-transform: uppercase;
   padding: 0.2em;
 }
 
 .head, #categories, .pagination, #tweets {
-  max-width: 960px;
+  max-width: 1000px;
 }
 
 .pagination {
   font-size: 14px;
 }
 
-#categories {
-  margin-bottom: 1em;
-}
-#categories .swatch {
+.swatch {
   display: inline-block;
   width: 1em;
   height: 1em;
@@ -320,11 +317,16 @@ a:link, a:visited {
   margin-right: 0.2em;
   margin-left: 0.5em;
 }
-#categories .category {
+
+#categories, #img-categories {
+  text-align: center;
+  margin-bottom: 1em;
+}
+#categories .category, #img-categories .category {
   display: inline-block;
   padding: 0.1em;
 }
-#categories .category a:link, #categories .category a:visited {
+#categories .category a:link, #categories .category a:visited, #img-categories .category a:link, #img-categories .category a:visited {
   color: white;
   font-weight: normal;
   text-decoration: none;
@@ -469,7 +471,113 @@ a:link, a:visited {
   color: white !important;
 }
 
+.uncategorized {
+  background-color: #333333;
+  color: white;
+  border: 1px solid black;
+}
+.uncategorized a:link, .uncategorized a:visited {
+  color: white !important;
+}
+
 .loading {
   background-image: url("../img/spinner.gif");
   background-repeat: no-repeat;
+}
+
+.initial-loading {
+  text-transform: none;
+  font-style: italic;
+}
+
+#imageHolder {
+  position: relative;
+}
+#imageHolder .mute-img {
+  position: absolute;
+  top: 0;
+  left: 0;
+}
+
+.scale div {
+  display: inline-block;
+  border: 1px solid #eeeeee;
+  background-color: #aaaaaa;
+  cursor: pointer;
+}
+.scale div.chosen {
+  background-color: #eeffff;
+}
+.scale .small {
+  width: 1em;
+  height: 1em;
+}
+.scale .medium {
+  width: 1.5em;
+  height: 1.5em;
+}
+.scale .large {
+  width: 2em;
+  height: 2em;
+}
+
+#tooltip {
+  font-family: "Franklin Gothic Medium", "Arial Narrow Bold", Arial, sans-serif;
+  position: absolute;
+  background: rgba(0, 0, 0, 0.8);
+  border: 1px solid black;
+  width: 350px;
+  -moz-box-shadow: 0px 0px 5px #333333;
+  -webkit-box-shadow: 0px 0px 5px #333333;
+  -o-box-shadow: 0px 0px 5px #333333;
+  box-shadow: 0px 0px 5px #333333;
+}
+#tooltip .arrow {
+  border-color: transparent transparent rgba(51, 51, 51, 0.8) transparent;
+  border-style: solid;
+  border-width: 10px;
+  height: 0;
+  width: 0;
+  position: absolute;
+  top: -17px;
+  left: 5px;
+}
+#tooltip .arrow .right {
+  right: 5px;
+}
+#tooltip .link-info {
+  background: rgba(255, 255, 255, 0.2);
+  padding: 1em;
+}
+#tooltip .link-info .url {
+  color: #aa99ff;
+}
+
+.tweet-detail-list {
+  text-transform: none;
+}
+.tweet-detail-list .tweet-detail {
+  font-family: "Franklin Gothic Medium", "Arial Narrow Bold", Arial, sans-serif;
+  margin: 0.5em;
+  padding: 0.5em;
+  border-radius: 5px;
+  background: rgba(255, 255, 255, 0.2);
+  width: 40em;
+  margin-left: auto;
+  margin-right: auto;
+}
+.tweet-detail-list .tweet-detail img {
+  float: left;
+  margin-right: 0.5em;
+}
+.tweet-detail-list .tweet-detail .byline .author, .tweet-detail-list .tweet-detail .byline .date {
+  float: left;
+  margin-right: 1em;
+}
+.tweet-detail-list .tweet-detail .byline .date {
+  color: #aaaaaa;
+}
+.tweet-detail-list .tweet-detail .tweet-text {
+  width: 33em;
+  float: left;
 }

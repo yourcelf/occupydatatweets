@@ -2,7 +2,7 @@
 <html>
     <head>
         <title>{% block title %}{% endblock %} - Occupy Twitter</title>
-        <link rel="stylesheet" type="text/css" href="/static/style.css" />
+        <link rel="stylesheet" type="text/css" href="/static/css/style.css" />
     </head>
     <body>
         {% block body %}
@@ -19,8 +19,9 @@
     </div>
 </script>
 {% block scripts %}
-<script type='text/javascript' src='http://ajax.googleapis.com/ajax/libs/jquery/1/jquery.min.js'></script>
-<script type='text/javascript' src='/static/script.js'></script>
+<script type='text/javascript' src='/static/js/underscore-min.js'></script>
+<script type='text/javascript' src='/static/js/jquery.js'></script>
+<script type='text/javascript' src='/static/js/script.js'></script>
 {% endblock %}
 </body>
 </html>

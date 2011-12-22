@@ -1,12 +1,6 @@
 import re
-import ssl
-import socket
-import urllib2
-import httplib
-import logging
 
 from django.core.management import BaseCommand
-from django.utils.encoding import force_unicode, DjangoUnicodeDecodeError
 
 from tweets.models import Tweet, HashTag
 

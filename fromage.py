@@ -10,7 +10,7 @@ import subprocess
 BASE = os.path.abspath(os.path.dirname(__file__))
 
 app = subprocess.Popen(["python", os.path.join(BASE, "manage.py"), "runserver"])
-sass = subprocess.Popen(["compass", "watch"], cwd=os.path.join(BASE, "static", "sass"))
+sass = subprocess.Popen(["compass", "watch"], cwd=os.path.join(BASE, "static", "css", "sass"))
 
 try:
     app.communicate()

@@ -4,3 +4,4 @@ data/
 django.log
 out/
 .sass-cache
+static/img/pixel*

@@ -1,0 +1,192 @@
+@import fontstacks
+
+// body
+$hfontfamily: $geneva_h
+$pfontfamily: $geneva_p
+$body: black
+$color: white
+// links
+$link: #3af
+$visited: #3af
+@import boilerplate
+
+h1
+  font-weight: bold
+
+body
+  padding: 0.5em
+  font-size: 14px
+
+a:link, a:visited
+  font-weight: bold
+
+.head, #categories, #img-categories, .pagination
+  background-color: rgba(255, 255, 255, 0.2)
+  padding: 0.2em
+.head, #categories, .pagination, #tweets
+  max-width: 1000px
+.pagination
+  font-size: 14px
+
+.swatch
+  display: inline-block
+  width: 1em
+  height: 1em
+  border-radius: 5px
+  margin-right: 0.2em
+  margin-left: 0.5em
+
+#categories, #img-categories
+  text-align: center
+  margin-bottom: 1em
+  .category
+    display: inline-block
+    padding: 0.1em
+    a:link, a:visited
+      color: #fff
+      font-weight: normal
+      text-decoration: none
+      border-bottom: 1px dotted #aaa
+
+#tweets
+  .tweet-link
+    display: inline-block
+    font-size: 12px
+    width: 180px
+    height: 1.8em
+    margin: 1px
+    border-radius: 3px
+    font-weight: bold
+    a:link, a:visited
+      color: white
+    .count
+      display: inline-block
+      background-color: rgba(255, 255, 255, 0.2)
+      margin-left: 0.1em
+      margin-right: 0.1em
+      width: 3.5em
+      text-align: center
+
+@mixin linky-colors($background, $foreground: white)
+  background-color: $background
+  color: $foreground
+  a:link, a:visited
+    color: $foreground !important
+
+.muted
+  opacity: 0.3
+.fail
+  +linky-colors(#a99, #bbb)
+  text-decoration: line-through
+.donation
+  +linky-colors(#9f9, black)
+.google
+  +linky-colors(#ff9, black)
+.image
+  +linky-colors(#ff39ae)
+.other
+  +linky-colors(#999)
+.stream
+  +linky-colors(#93f)
+.tweet
+  +linky-colors(#9af)
+.occupy
+  +linky-colors(white, black)
+.news
+  +linky-colors(#7c6c47)
+.blog
+  +linky-colors(#080)
+.wikipedia
+  +linky-colors(#ffd348, black)
+.geo
+  +linky-colors(#030)
+.fb
+  +linky-colors(#13a)
+.video
+  +linky-colors(#f00)
+.uncategorized
+  +linky-colors(#333)
+  border: 1px solid black
+
+  
+.loading
+  background-image: url("../img/spinner.gif")
+  background-repeat: no-repeat
+
+.initial-loading
+  text-transform: none
+  font-style: italic
+
+#imageHolder
+  position: relative
+  .mute-img
+    position: absolute
+    top: 0
+    left: 0
+
+.scale
+  div
+    display: inline-block
+    border: 1px solid #eee
+    background-color: #aaa
+    cursor: pointer
+    &.chosen
+      background-color: #eff
+  .small
+    width: 1em
+    height: 1em
+  .medium
+    width: 1.5em
+    height: 1.5em
+  .large
+    width: 2em
+    height: 2em
+
+#tooltip
+  font-family: $franklin_gothic_medium
+  position: absolute
+  background: rgba(0, 0, 0, 0.8)
+  border: 1px solid black
+  width: 350px
+  +single-box-shadow
+  .arrow
+    border-color: transparent transparent rgba(#333, 0.8) transparent
+    border-style: solid
+    border-width: 10px
+    height: 0
+    width: 0
+    position: absolute
+    top: -17px
+    left: 5px
+    .right
+      right: 5px
+
+  .link-info
+    background: rgba(255, 255, 255, 0.2)
+    padding: 1em
+    .url
+      color: #a9f
+
+.tweet-detail-list
+  text-transform: none
+  .tweet-detail
+    img
+      float: left
+      margin-right: 0.5em
+    font-family: $franklin_gothic_medium 
+    margin: 0.5em
+    padding: 0.5em
+    border-radius: 5px
+    background: rgba(255, 255, 255, 0.2)
+    width: 40em
+    margin-left: auto
+    margin-right: auto
+    .byline
+      .author, .date
+        float: left
+        margin-right: 1em
+      .date
+        color: #aaa
+    .tweet-text
+      width: 33em
+      float: left

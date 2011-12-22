@@ -1,0 +1,42 @@
+{% extends "base.html" %}
+{% block title %}URL Detail{% endblock %}
+{% block body %}
+<div class='head'>
+    <h1>{{ url.tweet_count }} tweet{{ tweet_count|pluralize }} with this url:</h1>
+    <p><a href='{{ url.url }}'>{{ url.url }}</a></p>
+    <p>
+        Category: 
+        <div class='swatch {{ url.domain.category }}'></div>
+        {{ url.domain.category }} 
+        {% if url.domain.subcategory %}({{ url.domain.subcategory }}){% endif %}
+    </p>
+</div>
+<div class='tweet-detail-list'>
+    {% for tweet in tweets %}
+    <div class='tweet-detail' data-id='{{ tweet.twitter_id}}'>
+        <a href='http://twitter.com/{{ tweet.from_user }}'><img src='{{ tweet.profile_image_url }}' /></a>
+        <div class='tweet-text'>
+            {{ tweet.text }}
+        </div>
+        <div class='byline'>
+            <div class='author' data-id='{{ tweet.from_user_id }}'>
+                <a href='http://twitter.com/{{ tweet.from_user }}'>{{ tweet.from_user }}</a>
+                {% if tweet.to_user %}
+                    <span class='reply' data-id='{{ tweet.to_user_id }}'>
+                        in reply to <a href='http://twitter.com/{{ tweet.to_user }}'>{{ tweet.to_user }}</a>
+                    </span>
+                {% endif %}
+            </div>
+            <div class='date'>
+                <a href='http://twitter.com/{{ tweet.from_user }}/status/{{ tweet.twitter_id }}'>{{ tweet.created_at|date:"Y b m"|title }}</a>
+            </div>
+        </div>
+        <div style='clear: both;'></div>
+    </div>
+    {% endfor %}
+</div>
+{% endblock %}
+{% block scripts %}
+{{ block.super }}
+<script type='text/javascript' src='{{ STATIC_URL }}js/tweetview.js'></script>
+{% endblock %}
